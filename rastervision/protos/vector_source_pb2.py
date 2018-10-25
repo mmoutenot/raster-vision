@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='rastervision/protos/vector_source.proto',
   package='rv.protos',
   syntax='proto2',
-  serialized_pb=_b('\n\'rastervision/protos/vector_source.proto\x12\trv.protos\x1a\x1cgoogle/protobuf/struct.proto\"\xcc\x02\n\x12VectorSourceConfig\x12\x38\n\x07mbtiles\x18\x01 \x01(\x0b\x32%.rv.protos.VectorSourceConfig.MBTilesH\x00\x12\x38\n\x07geojson\x18\x02 \x01(\x0b\x32%.rv.protos.VectorSourceConfig.GeoJSONH\x00\x12\x30\n\rcustom_config\x18\x03 \x01(\x0b\x32\x17.google.protobuf.StructH\x00\x12\x33\n\x12\x63lass_id_to_filter\x18\x04 \x02(\x0b\x32\x17.google.protobuf.Struct\x12\x13\n\x0bsource_type\x18\x05 \x02(\t\x1a\x16\n\x07MBTiles\x12\x0b\n\x03uri\x18\x01 \x02(\t\x1a\x16\n\x07GeoJSON\x12\x0b\n\x03uri\x18\x01 \x02(\tB\x16\n\x14vector_source_config')
+  serialized_pb=_b('\n\'rastervision/protos/vector_source.proto\x12\trv.protos\x1a\x1cgoogle/protobuf/struct.proto\"\xcc\x02\n\x12VectorSourceConfig\x12\x38\n\x07mbtiles\x18\x01 \x01(\x0b\x32%.rv.protos.VectorSourceConfig.MBTilesH\x00\x12\x38\n\x07geojson\x18\x02 \x01(\x0b\x32%.rv.protos.VectorSourceConfig.GeoJSONH\x00\x12\x30\n\rcustom_config\x18\x03 \x01(\x0b\x32\x17.google.protobuf.StructH\x00\x12\x33\n\x12\x63lass_id_to_filter\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x13\n\x0bsource_type\x18\x05 \x02(\t\x1a\x16\n\x07MBTiles\x12\x0b\n\x03uri\x18\x01 \x02(\t\x1a\x16\n\x07GeoJSON\x12\x0b\n\x03uri\x18\x01 \x02(\tB\x16\n\x14vector_source_config')
   ,
   dependencies=[google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -118,7 +118,7 @@ _VECTORSOURCECONFIG = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='class_id_to_filter', full_name='rv.protos.VectorSourceConfig.class_id_to_filter', index=3,
-      number=4, type=11, cpp_type=10, label=2,
+      number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

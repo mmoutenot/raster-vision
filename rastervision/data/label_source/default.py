@@ -33,18 +33,16 @@ class ObjectDetectionGeoJSONSourceDefaultProvider(LabelSourceDefaultProvider):
                                    .build()
 
 
-class ChipClassificationGeoJSONSourceDefaultProvider(
-        LabelSourceDefaultProvider):
+class ChipClassificationLabelSourceDefaultProvider(LabelSourceDefaultProvider):
     @staticmethod
     def handles(task_type, uri):
         if task_type == rv.CHIP_CLASSIFICATION:
             ext = os.path.splitext(uri)[1]
-            return ext.lower() in ['.json', '.geojson']
-        return False
+            return ext.lower() in ['.geojson', '.json', '.mbtiles']
 
     @staticmethod
     def construct(uri):
-        return rv.LabelSourceConfig.builder(rv.CHIP_CLASSIFICATION_GEOJSON) \
+        return rv.LabelSourceConfig.builder(rv.CHIP_CLASSIFICATION) \
                                    .with_uri(uri) \
                                    .build()
 
