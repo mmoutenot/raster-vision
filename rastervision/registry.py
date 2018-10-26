@@ -11,7 +11,7 @@ from rastervision.data.vector_source.default import (
 from rastervision.data.label_source.default import (
     ObjectDetectionLabelSourceDefaultProvider,
     ChipClassificationLabelSourceDefaultProvider,
-    SemanticSegmentationRasterSourceDefaultProvider)
+    SemanticSegmentationLabelSourceDefaultProvider)
 from rastervision.data.label_store.default import (
     ObjectDetectionGeoJSONStoreDefaultProvider,
     ChipClassificationGeoJSONStoreDefaultProvider,
@@ -75,6 +75,8 @@ class Registry:
             rv.data.ChipClassificationLabelSourceConfigBuilder,
             (rv.LABEL_SOURCE, rv.OBJECT_DETECTION):
             rv.data.ObjectDetectionLabelSourceConfigBuilder,
+            (rv.LABEL_SOURCE, rv.SEMANTIC_SEGMENTATION):
+            rv.data.SemanticSegmentationLabelSourceConfigBuilder,
 
             # Label Source aliases provided for backward-compatibility
             (rv.LABEL_SOURCE, rv.OBJECT_DETECTION_GEOJSON):
@@ -82,7 +84,7 @@ class Registry:
             (rv.LABEL_SOURCE, rv.CHIP_CLASSIFICATION_GEOJSON):
             rv.data.ChipClassificationLabelSourceConfigBuilder,
             (rv.LABEL_SOURCE, rv.SEMANTIC_SEGMENTATION_RASTER):
-            rv.data.SemanticSegmentationRasterSourceConfigBuilder,
+            rv.data.SemanticSegmentationLabelSourceConfigBuilder,
 
             # Label Stores
             (rv.LABEL_STORE, rv.OBJECT_DETECTION_GEOJSON):
@@ -124,7 +126,7 @@ class Registry:
         self._internal_default_label_sources = [
             ObjectDetectionLabelSourceDefaultProvider,
             ChipClassificationLabelSourceDefaultProvider,
-            SemanticSegmentationRasterSourceDefaultProvider
+            SemanticSegmentationLabelSourceDefaultProvider
         ]
 
         self._internal_default_label_stores = [

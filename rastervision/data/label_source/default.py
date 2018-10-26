@@ -46,7 +46,7 @@ class ChipClassificationLabelSourceDefaultProvider(LabelSourceDefaultProvider):
                                    .build()
 
 
-class SemanticSegmentationRasterSourceDefaultProvider(
+class SemanticSegmentationLabelSourceDefaultProvider(
         LabelSourceDefaultProvider):
     @staticmethod
     def handles(task_type, uri):
@@ -57,6 +57,6 @@ class SemanticSegmentationRasterSourceDefaultProvider(
 
     @staticmethod
     def construct(uri):
-        return rv.LabelSourceConfig.builder(rv.SEMANTIC_SEGMENTATION_RASTER) \
+        return rv.LabelSourceConfig.builder(rv.SEMANTIC_SEGMENTATION) \
                                    .with_raster_source(uri) \
                                    .build()

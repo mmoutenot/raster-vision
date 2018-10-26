@@ -10,7 +10,7 @@ import "rastervision/protos/vector_source.proto";
 
 message LabelSourceConfig {
     message ObjectDetectionLabelSource {
-        required VectorSourceConfig vector_source = 1;        
+        required VectorSourceConfig vector_source = 1;
     }
 
     message ChipClassificationLabelSource {
@@ -41,7 +41,7 @@ message LabelSourceConfig {
         optional bool infer_cells = 7 [default=false];
     }
 
-    message SemanticSegmentationRasterSource {
+    message SemanticSegmentationLabelSource {
         // Raster source from which the label data are to be
         // drawn.
         required RasterSourceConfig source = 1;
@@ -58,7 +58,7 @@ message LabelSourceConfig {
     oneof label_source_config {
         ObjectDetectionLabelSource object_detection_label_source = 2;
         ChipClassificationLabelSource chip_classification_label_source = 3;
-        SemanticSegmentationRasterSource semantic_segmentation_raster_source = 4;
+        SemanticSegmentationLabelSource semantic_segmentation_label_source = 4;
         google.protobuf.Struct custom_config = 5;
     }
 }
