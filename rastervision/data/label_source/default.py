@@ -18,17 +18,16 @@ class LabelSourceDefaultProvider(ABC):
         pass
 
 
-class ObjectDetectionGeoJSONSourceDefaultProvider(LabelSourceDefaultProvider):
+class ObjectDetectionLabelSourceDefaultProvider(LabelSourceDefaultProvider):
     @staticmethod
     def handles(task_type, uri):
         if task_type == rv.OBJECT_DETECTION:
             ext = os.path.splitext(uri)[1]
-            return ext.lower() in ['.json', '.geojson']
-        return False
+            return ext.lower() in ['.geojson', '.json', '.mbtiles']
 
     @staticmethod
     def construct(uri):
-        return rv.LabelSourceConfig.builder(rv.OBJECT_DETECTION_GEOJSON) \
+        return rv.LabelSourceConfig.builder(rv.OBJECT_DETECTION) \
                                    .with_uri(uri) \
                                    .build()
 

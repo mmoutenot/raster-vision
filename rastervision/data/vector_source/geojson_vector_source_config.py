@@ -21,12 +21,14 @@ class GeoJSONVectorSourceConfig(VectorSourceConfig):
         return GeoJSONVectorSource(
             self.uri, class_map=class_map, class_id_to_filter=self.class_id_to_filter)
 
-    def update_for_command(self, command_type, experiment_config, context=[]):
-        conf = self
-        io_def = rv.core.CommandIODefinition()
+    def update_for_command(self,
+                           command_type,
+                           experiment_config,
+                           context=None,
+                           io_def=None):
+        io_def = io_def or rv.core.CommandIODefinition()
         io_def.add_input(self.uri)
-
-        return (conf, io_def)
+        return io_def
 
 
 class GeoJSONVectorSourceConfigBuilder(VectorSourceConfigBuilder):
