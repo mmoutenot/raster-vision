@@ -9,7 +9,7 @@ import rastervision as rv
 
 from rastervision.data.label_source import ObjectDetectionLabelSource
 from rastervision.data.label_source.utils import (
-    add_classes_to_geojson, geojson_to_object_detection_labels)
+    geojson_to_object_detection_labels)
 from rastervision.data import ObjectDetectionLabels
 from rastervision.core.box import Box
 from rastervision.core.class_map import ClassMap, ClassItem
@@ -47,7 +47,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                                      [0., 0.]]]
                 },
                 'properties': {
-                    'class_name': 'car',
+                    'class_id': 1,
                     'score': 0.9
                 }
             }, {
@@ -60,7 +60,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                 },
                 'properties': {
                     'score': 0.9,
-                    'class_name': 'house'
+                    'class_id': 2
                 }
             }]
         }
@@ -77,7 +77,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                                       [0., 0.]]]]
                 },
                 'properties': {
-                    'class_name': 'car',
+                    'class_id': 1,
                     'score': 0.9
                 }
             }, {
@@ -91,7 +91,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                 },
                 'properties': {
                     'score': 0.9,
-                    'class_name': 'house'
+                    'class_id': 2
                 }
             }]
         }
@@ -103,7 +103,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                 'type': 'Feature',
                 'properties': {
                     'score': 0.9,
-                    'class_name': 'house'
+                    'class_id': 2
                 },
                 'geometry': {
                     'type': 'LineString',
@@ -134,9 +134,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
         self.temp_dir.cleanup()
 
     def test_multipolygon_geojson_to_labels(self):
-        geojson = add_classes_to_geojson(self.multipolygon_geojson_dict,
-                                         self.class_map)
-        labels = geojson_to_object_detection_labels(geojson,
+        labels = geojson_to_object_detection_labels(self.multipolygon_geojson_dict,
                                                     self.crs_transformer)
 
         # construct expected labels object
@@ -150,8 +148,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
         labels.assert_equal(expected_labels)
 
     def test_polygon_geojson_to_labels(self):
-        geojson = add_classes_to_geojson(self.geojson_dict, self.class_map)
-        labels = geojson_to_object_detection_labels(geojson,
+        labels = geojson_to_object_detection_labels(self.geojson_dict,
                                                     self.crs_transformer)
 
         # construct expected labels object

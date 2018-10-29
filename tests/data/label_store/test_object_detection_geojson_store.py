@@ -6,7 +6,7 @@ from moto import mock_s3
 
 from rastervision.data import ObjectDetectionGeoJSONStore, ObjectDetectionLabelSource
 from rastervision.data.label_source.utils import (
-    add_classes_to_geojson, geojson_to_object_detection_labels)
+    geojson_to_object_detection_labels)
 from rastervision.core.box import Box
 from rastervision.core.class_map import ClassMap, ClassItem
 from rastervision.filesystem import NotWritableError
@@ -34,7 +34,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                                      [0., 0.]]]
                 },
                 'properties': {
-                    'class_name': 'car',
+                    'class_id': 1,
                     'score': 0.9
                 }
             }, {
@@ -47,7 +47,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                 },
                 'properties': {
                     'score': 0.9,
-                    'class_name': 'house'
+                    'class_id': 2
                 }
             }]
         }
@@ -64,7 +64,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                                       [0., 0.]]]]
                 },
                 'properties': {
-                    'class_name': 'car',
+                    'class_id': 1,
                     'score': 0.9
                 }
             }, {
@@ -78,7 +78,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                 },
                 'properties': {
                     'score': 0.9,
-                    'class_name': 'house'
+                    'class_id': 2
                 }
             }]
         }
@@ -90,7 +90,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
                 'type': 'Feature',
                 'properties': {
                     'score': 0.9,
-                    'class_name': 'house'
+                    'class_id': 1               
                 },
                 'geometry': {
                     'type': 'LineString',
@@ -111,8 +111,7 @@ class TestObjectDetectionLabelSource(unittest.TestCase):
 
     @mock_s3
     def test_write_invalid_uri(self):
-        geojson = add_classes_to_geojson(self.geojson_dict, self.class_map)
-        labels = geojson_to_object_detection_labels(geojson,
+        labels = geojson_to_object_detection_labels(self.geojson_dict,
                                                     self.crs_transformer)
 
         invalid_uri = 's3://invalid_path/invalid.json'
