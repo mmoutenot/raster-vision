@@ -20,7 +20,7 @@ def mbtiles_to_geojson(uri, crs_transformer, extent):
         ps = Popen(['tippecanoe-decode', '-c', '-f', path], stdout=PIPE)
         filtered_geojson = check_output(
             [
-                'python', '-m', 'label_maker.stream_filter',
+                'python', '-m', 'rastervision.data.vector_source.label_maker.stream_filter',
                 json.dumps(map_extent.shapely_format())
             ],
             stdin=ps.stdout).decode('utf-8')

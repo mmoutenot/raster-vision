@@ -1,6 +1,6 @@
 import copy
 
-from label_maker.filter import create_filter
+from rastervision.data.vector_source.label_maker.filter import create_filter
 
 
 class ClassTransformer():
