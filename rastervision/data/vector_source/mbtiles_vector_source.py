@@ -3,6 +3,9 @@ from subprocess import Popen, PIPE, check_output
 import logging
 import os
 
+from supermercado.burntiles import burn
+from shapely.geometry import shape
+
 from rastervision.data.vector_source.vector_source import VectorSource
 from rastervision.utils.files import download_if_needed, get_local_path
 from rastervision.rv_config import RVConfig
@@ -11,36 +14,42 @@ log = logging.getLogger(__name__)
 
 
 def mbtiles_to_geojson(uri, crs_transformer, extent):
+    log.info('Downloading and converting vector tiles to GeoJSON...')
+
+    # Get all tiles covering extent.
     map_extent = extent.reproject(
         lambda point: crs_transformer.pixel_to_map(point))
+    extent_polys = [{
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [map_extent.geojson_coordinates()]
+        }
+    }]
+    # TODO make zoom an option
+    zoom = 12
+    xyzs = burn(extent_polys, zoom)
 
-    # Note we are using RVConfig.tmp_dir and not RVConfig.get_tmp_dir() because
-    # we want this file to persist after this function exits for the sake of
-    # caching.
-    if RVConfig.tmp_dir is None:
-        RVConfig.set_tmp_dir()
-    tmp_root = RVConfig.tmp_dir
-    mbtiles_dir = os.path.join(tmp_root, 'mbtiles')
+    # Download tiles and convert to geojson.
+    # Convert to Geojson.
+    features = []
+    for xyz in xyzs:
+        x, y, z = xyz
+        tile_uri = uri.format(x=x, y=y, z=z)
+        with RVConfig.get_tmp_dir() as tmp_dir:
+            tile_path = download_if_needed(tile_uri, tmp_dir)
+            cmd = ['tippecanoe-decode', tile_path, str(z), str(x), str(y)]
+            tile_geojson_str = check_output(cmd).decode('utf-8')
+            tile_features = json.loads(tile_geojson_str)
+            tile_features = tile_features['features'][0]['features']
+            features.extend(tile_features)
 
-    log.info('Converting MBTiles to GeoJSON...')
-    path = get_local_path(uri, mbtiles_dir)
-    if not os.path.isfile(path):
-        path = download_if_needed(uri, mbtiles_dir)
-
-    ps = Popen(['tippecanoe-decode', '-c', '-f', path], stdout=PIPE)
-    filtered_geojson = check_output(
-        [
-            'python', '-m', 'rastervision.data.vector_source.label_maker.stream_filter',
-            json.dumps(map_extent.shapely_format())
-        ],
-        stdin=ps.stdout).decode('utf-8')
-
-    # Each line has a feature. The last line is empty so discard.
-    features = [
-        json.loads(feature) for feature in filtered_geojson.split('\n')[:-1]
-    ]
-    geojson = {'type': 'FeatureCollection', 'features': features}
-
+    # TODO Merge features.
+    geojson = {
+        'type': 'FeatureCollection',
+        'features': features
+    }
     return geojson
 
 
