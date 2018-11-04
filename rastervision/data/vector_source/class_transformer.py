@@ -35,16 +35,23 @@ class ClassTransformer():
             for class_id, filter_fn in self.class_id_to_filter.items():
                 if filter_fn(feature):
                     return class_id
+            return None
 
         # Default to class_id of 1.
         return 1
 
     def transform_geojson(self, geojson):
-        geojson = copy.deepcopy(geojson)
-        features = geojson['features']
-        for feature in features:
+        new_features = []
+        for feature in geojson['features']:
             class_id = self.infer_class_id(feature)
-            properties = feature.get('properties', {})
-            properties['class_id'] = class_id
-            feature['properties'] = properties
-        return geojson
+            if class_id is not None:
+                feature = copy.deepcopy(feature)
+                properties = feature.get('properties', {})
+                properties['class_id'] = class_id
+                feature['properties'] = properties
+                new_features.append(feature)
+        new_geojson = {
+            'type': 'FeatureCollection',
+            'features': new_features
+        }
+        return new_geojson
